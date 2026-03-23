@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>ReclamaAI — Genera tu carta de reclamación gratis con IA</title>
+<meta name="description" content="Genera cartas de reclamación profesionales en segundos: luz, gas, banco, aerolínea, seguro, Amazon y más. Gratis, con IA local. Sin registro."/>
+<meta name="keywords" content="carta reclamacion luz, reclamar banco gratis, carta reclamacion aerolinea, reclamacion consumidor ia, reclamar movistar, carta reclamacion endesa"/>
+<meta property="og:title" content="ReclamaAI — Tu carta de reclamación en segundos"/>
+<meta property="og:description" content="IA gratuita para generar cartas de reclamación profesionales. Luz, banco, aerolínea, seguro y más."/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+<!--
+  ██████████████████████████████████████████
+  ██  ADSENSE — pega aquí tu script        ██
+  ██████████████████████████████████████████
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js
+    ?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+-->
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --red:    #d0190f;
+  --red2:   #a81209;
+  --black:  #0f0f0f;
+  --dark:   #1a1a1a;
+  --dark2:  #242424;
+  --gray:   #2e2e2e;
+  --mid:    #555;
+  --light:  #aaa;
+  --paper:  #f7f6f3;
+  --white:  #ffffff;
+  --border: #333;
+  --fd:     'Barlow Condensed',sans-serif;
+  --fb:     'Barlow',sans-serif;
+  --fm:     'Roboto Mono',monospace;
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:var(--fb);font-size:15px;line-height:1.6;min-height:100vh}
+
+/* ── NOISE TEXTURE overlay ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.6
+}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  border-bottom:2px solid var(--red);
+  background:rgba(15,15,15,.96);
+  backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2rem;height:56px
+}
+
+.logo{
+  font-family:var(--fd);font-size:1.6rem;font-weight:900;
+  letter-spacing:-.01em;color:var(--white);display:flex;align-items:center;gap:8px
+}
+.logo-badge{
+  background:var(--red);color:var(--white);
+  font-size:.65rem;font-family:var(--fm);font-weight:500;
+  padding:2px 6px;border-radius:2px;letter-spacing:.05em
+}
+
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-status{display:flex;align-items:center;gap:6px;font-family:var(--fm);font-size:11px;color:var(--light)}
+#ndot{width:7px;height:7px;border-radius:50%;background:var(--mid);transition:background .3s}
+#ndot.ok{background:#3ecf8e}
+#ndot.err{background:var(--red)}
+
+/* ── AD SLOTS ── */
+.ad{
+  background:var(--dark);border:1px dashed var(--border);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--mid);font-family:var(--fm);font-size:10px;letter-spacing:.06em
+}
+.ad-top{height:90px;margin:1rem 2rem;border-radius:3px}
+.ad-mid{height:90px;margin:2.5rem 0;border-radius:3px}
+.ad-sidebar{width:300px;min-height:600px;flex-shrink:0;position:sticky;top:72px;border-radius:3px}
+
+/* ── LAYOUT ── */
+.wrap{max-width:1160px;margin:0 auto;padding:0 2rem;position:relative;z-index:1}
+.body-layout{display:flex;gap:2rem;align-items:flex-start;padding-bottom:5rem}
+.main{flex:1;min-width:0}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 0 2.5rem;border-bottom:1px solid var(--border)}
+.hero-eyebrow{
+  font-family:var(--fm);font-size:11px;color:var(--red);
+  letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem;
+  display:flex;align-items:center;gap:8px
+}
+.hero-eyebrow::before{content:'';display:block;width:24px;height:2px;background:var(--red)}
+h1{
+  font-family:var(--fd);font-size:clamp(3rem,7vw,5.5rem);
+  font-weight:900;line-height:.95;letter-spacing:-.02em;
+  color:var(--white);margin-bottom:1.2rem
+}
+h1 em{color:var(--red);font-style:normal;display:block}
+.hero-sub{
+  font-size:1.05rem;font-weight:300;color:var(--light);
+  max-width:540px;line-height:1.7;margin-bottom:2rem
+}
+.hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column}
+.stat-n{font-family:var(--fd);font-size:2rem;font-weight:900;color:var(--white);line-height:1}
+.stat-l{font-size:11px;color:var(--mid);font-family:var(--fm);margin-top:2px}
+
+/* ── CATEGORY GRID ── */
+.section-label{
+  font-family:var(--fm);font-size:10px;color:var(--mid);
+  letter-spacing:.12em;text-transform:uppercase;
+  display:flex;align-items:center;gap:12px;margin:2rem 0 1rem
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:2rem}
+
+.cat{
+  background:var(--dark);border:1px solid var(--border);
+  border-radius:4px;padding:14px 12px;cursor:pointer;
+  transition:border-color .15s,background .15s;text-align:left
+}
+.cat:hover{border-color:var(--mid);background:var(--dark2)}
+.cat.active{background:var(--red);border-color:var(--red)}
+.cat-icon{font-size:1.4rem;display:block;margin-bottom:6px}
+.cat-name{
+  font-family:var(--fd);font-size:1rem;font-weight:700;
+  color:var(--white);letter-spacing:.01em;line-height:1.1
+}
+.cat-desc{font-size:11px;color:var(--light);margin-top:2px;font-family:var(--fm)}
+.cat.active .cat-desc{color:rgba(255,255,255,.7)}
+
+/* ── FORM CARD ── */
+.card{
+  background:var(--dark);border:1px solid var(--border);
+  border-radius:6px;padding:2rem;margin-bottom:1.5rem
+}
+.card-title{
+  font-family:var(--fd);font-size:1.3rem;font-weight:700;
+  color:var(--white);margin-bottom:1.5rem;padding-bottom:1rem;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px
+}
+.card-title span{color:var(--red)}
+
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.full{grid-column:1/-1}
+label{font-family:var(--fm);font-size:10px;color:var(--mid);letter-spacing:.08em;text-transform:uppercase}
+
+input,select,textarea{
+  background:var(--dark2);border:1px solid var(--border);
+  border-radius:3px;color:var(--white);
+  font-family:var(--fb);font-size:14px;
+  padding:10px 12px;outline:none;width:100%;
+  transition:border-color .15s
+}
+input:focus,select:focus,textarea:focus{border-color:var(--red)}
+select option{background:var(--dark)}
+textarea{resize:vertical;min-height:80px}
+input::placeholder,textarea::placeholder{color:var(--mid)}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+.config-strip{
+  display:flex;gap:1rem;align-items:flex-end;
+  margin-top:1.5rem;padding-top:1.5rem;
+  border-top:1px solid var(--border)
+}
+.config-strip .fg{flex:1}
+
+.btn-main{
+  font-family:var(--fd);font-size:1.1rem;font-weight:900;
+  letter-spacing:.04em;text-transform:uppercase;
+  padding:11px 32px;background:var(--red);color:var(--white);
+  border:2px solid var(--red);border-radius:3px;cursor:pointer;
+  transition:all .15s;white-space:nowrap;
+  display:flex;align-items:center;gap:10px
+}
+.btn-main:hover{background:var(--red2);border-color:var(--red2)}
+.btn-main:active{transform:scale(.98)}
+.btn-main:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+.spin{
+  width:14px;height:14px;
+  border:2px solid rgba(255,255,255,.25);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .65s linear infinite;display:none
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── OUTPUT ── */
+.output-card{
+  background:var(--dark);border:1px solid var(--border);
+  border-radius:6px;overflow:hidden;margin-bottom:.5rem
+}
+.output-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.75rem 1.25rem;border-bottom:1px solid var(--border);
+  background:var(--dark2)
+}
+.output-label{font-family:var(--fm);font-size:11px;color:var(--mid)}
+.output-actions{display:flex;gap:6px}
+
+.btn-sm{
+  font-family:var(--fm);font-size:10px;padding:5px 12px;
+  background:transparent;color:var(--light);
+  border:1px solid var(--border);border-radius:2px;
+  cursor:pointer;transition:all .15s;letter-spacing:.04em
+}
+.btn-sm:hover{color:var(--white);border-color:var(--light)}
+.btn-sm.done{color:#3ecf8e;border-color:#3ecf8e}
+
+#output{
+  padding:2rem 1.5rem;
+  font-family:var(--fb);font-size:15px;line-height:1.85;
+  color:var(--paper);min-height:220px;white-space:pre-wrap
+}
+#output.empty{
+  color:var(--mid);font-family:var(--fm);
+  font-size:12px;font-style:italic
+}
+
+.cursor{
+  display:inline-block;width:2px;height:1.05em;
+  background:var(--red);margin-left:2px;
+  vertical-align:text-bottom;
+  animation:blink .85s step-end infinite
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ── TRUST / SOCIAL PROOF ── */
+.proof-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);border-radius:4px;
+  overflow:hidden;margin:2rem 0
+}
+.proof-item{
+  background:var(--dark);padding:1.25rem 1rem;text-align:center
+}
+.proof-n{
+  font-family:var(--fd);font-size:2.2rem;font-weight:900;
+  color:var(--red);line-height:1
+}
+.proof-l{font-size:12px;color:var(--light);margin-top:4px}
+
+/* ── FAQ ── */
+.faq-section{margin:2.5rem 0}
+.faq-section h2{
+  font-family:var(--fd);font-size:2rem;font-weight:900;
+  color:var(--white);margin-bottom:1.25rem
+}
+details{border-top:1px solid var(--border)}
+details:last-child{border-bottom:1px solid var(--border)}
+summary{
+  padding:.9rem 0;font-weight:500;cursor:pointer;
+  list-style:none;display:flex;justify-content:space-between;
+  align-items:center;font-size:14px;color:var(--paper)
+}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:1.2rem;color:var(--red);font-family:var(--fd);font-weight:900}
+details[open] summary::after{content:'−'}
+details p{
+  padding:.25rem 0 1.25rem;font-size:13px;
+  color:var(--light);line-height:1.75
+}
+
+/* ── LEGAL NOTE ── */
+.legal-note{
+  background:var(--dark);border:1px solid var(--border);
+  border-left:3px solid var(--red);border-radius:0 4px 4px 0;
+  padding:1rem 1.25rem;font-size:12px;color:var(--light);
+  line-height:1.6;margin-bottom:2rem
+}
+
+/* ── FOOTER ── */
+footer{
+  border-top:2px solid var(--border);padding:1.5rem 0;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem
+}
+footer p{font-size:12px;color:var(--mid);font-family:var(--fm)}
+footer a{color:var(--light);text-decoration:none}
+footer a:hover{color:var(--white)}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:2rem;right:2rem;
+  background:var(--red);color:var(--white);
+  padding:12px 20px;border-radius:4px;
+  font-family:var(--fm);font-size:12px;
+  opacity:0;transform:translateY(16px);
+  transition:all .3s;z-index:999;max-width:320px
+}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* ── PRINT ── */
+@media print{
+  nav,#app-ui,.ad,.proof-strip,.faq-section,.legal-note,footer,.output-topbar{display:none!important}
+  #output{color:#000;font-size:12pt;line-height:1.7;padding:0}
+  body{background:#fff;color:#000}
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .ad-sidebar{display:none}
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  .form-grid{grid-template-columns:1fr}
+  .config-strip{flex-direction:column;align-items:stretch}
+  .hero-stats{gap:1.5rem}
+  .proof-strip{grid-template-columns:1fr}
+  h1{font-size:2.8rem}
+  .wrap{padding:0 1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">ReclamaAI<span class="logo-badge">BETA</span></div>
+  <div class="nav-right">
+    <div class="nav-status">
+      <div id="ndot"></div>
+      <span id="nstatus">comprobando...</span>
+    </div>
+  </div>
+</nav>
+
+<!-- AD TOP -->
+<div class="wrap">
+  <div class="ad ad-top">
+    <!-- ADSENSE 728×90 —
+    <ins class="adsbygoogle" style="display:block"
+      data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+      data-ad-slot="XXXXXXXXXX"
+      data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script> -->
+    ADSENSE · 728×90
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="wrap body-layout">
+<div class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">Inteligencia Artificial · Gratis · Sin registro</div>
+    <h1>Reclama lo<em>que es tuyo.</em></h1>
+    <p class="hero-sub">Genera cartas de reclamación profesionales en segundos. Luz, banco, aerolínea, seguro, Amazon y más. Gratis, sin registro, listo en 30 segundos.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-n">8</span><span class="stat-l">tipos de reclamación</span></div>
+      <div class="stat"><span class="stat-n">0€</span><span class="stat-l">coste total</span></div>
+      <div class="stat"><span class="stat-n">100%</span><span class="stat-l">privado y local</span></div>
+      <div class="stat"><span class="stat-n">30s</span><span class="stat-l">carta lista en</span></div>
+    </div>
+  </section>
+
+  <!-- APP UI -->
+  <div id="app-ui">
+
+    <!-- CATEGORÍAS -->
+    <div class="section-label">Elige la categoría</div>
+    <div class="cat-grid" id="cat-grid"></div>
+
+    <!-- FORMULARIO -->
+    <div class="card">
+      <div class="card-title"><span id="f-icon">⚡</span> <span id="f-label">Luz / Gas</span></div>
+      <div class="form-grid" id="form-fields"></div>
+      <div class="config-strip">
+        <div class="fg" style="max-width:220px">
+          <label>Tono de la carta</label>
+          <select id="sel-tono">
+            <option value="formal y firme">Formal y firme</option>
+            <option value="muy formal y técnico">Muy formal y técnico</option>
+            <option value="formal pero cordial">Formal pero cordial</option>
+            <option value="directo y contundente">Directo y contundente</option>
+          </select>
+        </div>
+        <button class="btn-main" id="btn-gen" onclick="generar()">
+          <div class="spin" id="spin"></div>
+          <span id="btn-txt">Generar carta</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="output-card">
+      <div class="output-topbar">
+        <span class="output-label">// carta generada</span>
+        <div class="output-actions">
+          <button class="btn-sm" id="btn-copy" onclick="copiar()">copiar texto</button>
+          <button class="btn-sm" onclick="window.print()">imprimir / PDF</button>
+        </div>
+      </div>
+      <div id="output" class="empty">Tu carta aparecerá aquí. Rellena el formulario arriba y pulsa «Generar carta».</div>
+    </div>
+
+    <!-- AD MID -->
+    <div class="ad ad-mid">
+      <!-- ADSENSE 728×90 —
+      <ins class="adsbygoogle" style="display:block"
+        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+        data-ad-slot="XXXXXXXXXX"
+        data-ad-format="auto"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script> -->
+      ADSENSE · 728×90
+    </div>
+
+    <!-- LEGAL NOTE -->
+    <div class="legal-note">
+      <strong>Aviso legal:</strong> Las cartas generadas son plantillas orientativas basadas en legislación española vigente. ReclamaAI no presta asesoramiento legal. Para casos complejos o cuantías elevadas, consulta con un abogado o una asociación de consumidores (OCU, FACUA, etc.).
+    </div>
+
+    <!-- SOCIAL PROOF -->
+    <div class="proof-strip">
+      <div class="proof-item"><div class="proof-n">8</div><div class="proof-l">tipos de carta cubiertas</div></div>
+      <div class="proof-item"><div class="proof-n">LPH</div><div class="proof-l">+ 6 leyes referenciadas</div></div>
+      <div class="proof-item"><div class="proof-n">0€</div><div class="proof-l">sin suscripciones ni APIs</div></div>
+    </div>
+
+    <!-- FAQ (SEO content) -->
+    <section class="faq-section">
+      <h2>Preguntas frecuentes</h2>
+
+      <details>
+        <summary>¿Cómo reclamo una factura de luz incorrecta?</summary>
+        <p>Selecciona "Luz / Gas", indica tu nombre, número de contrato o CUPS (aparece en tu factura), describe el cobro incorrecto y qué solución pides (rectificación, devolución, etc.). La IA generará una carta basada en la Ley 24/2013 del Sector Eléctrico. Envíala por burofax o correo certificado a la dirección de atención al cliente de tu comercializadora.</p>
+      </details>
+
+      <details>
+        <summary>¿Qué hago si Ryanair o Iberia cancela mi vuelo?</summary>
+        <p>El Reglamento CE 261/2004 te da derecho a compensación de hasta 600€ por vuelo cancelado o retrasado más de 3 horas. Selecciona "Aerolínea / Viaje", indica tu número de reserva y la incidencia. La carta citará el reglamento europeo y reclamará la compensación correspondiente.</p>
+      </details>
+
+      <details>
+        <summary>¿Cómo reclamar comisiones abusivas al banco?</summary>
+        <p>Selecciona "Banco / Financiero". Describe las comisiones aplicadas y solicita su devolución. Si el banco no responde en 2 meses, puedes escalar al Servicio de Reclamaciones del Banco de España, que es gratuito y vinculante para la entidad.</p>
+      </details>
+
+      <details>
+        <summary>¿Qué garantías tengo en una compra online?</summary>
+        <p>El RDL 1/2007 (Ley General para la Defensa de los Consumidores) garantiza 3 años de garantía legal en productos nuevos y 2 años en segunda mano para ventas a particulares. Selecciona "Tienda online / Amazon" para generar tu reclamación por producto defectuoso o devolución rechazada.</p>
+      </details>
+
+      <details>
+        <summary>¿Es gratuita esta herramienta?</summary>
+        <p>Sí, 100% gratuita. ReclamaAI usa la API de Groq, que tiene un generoso free tier de 14.400 peticiones al día. No necesitas instalar nada, solo usar la web.</p>
+      </details>
+
+      <details>
+        <summary>¿Qué modelo de IA usa ReclamaAI?</summary>
+        <p>ReclamaAI usa Llama 3.1 8B de Meta a través de Groq, uno de los modelos open source más potentes disponibles. Groq lo ejecuta en hardware especializado (LPU) lo que lo hace extremadamente rápido — notarás que la carta aparece en segundos.</p>
+      </details>
+    </section>
+
+  </div><!-- /app-ui -->
+</div><!-- /main -->
+
+<!-- SIDEBAR AD -->
+<div class="ad ad-sidebar">
+  <!-- ADSENSE 300×600 —
+  <ins class="adsbygoogle" style="display:block"
+    data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+    data-ad-slot="XXXXXXXXXX"
+    data-ad-format="auto"></ins>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({})</script> -->
+  ADSENSE<br>300×600
+</div>
+
+</div><!-- /body-layout -->
+
+<!-- FOOTER -->
+<div class="wrap">
+  <footer>
+    <p>ReclamaAI &copy; 2025 — Generador de cartas de reclamación con IA</p>
+    <p><a href="#">Aviso legal</a> &middot; <a href="#">Privacidad</a> &middot; Powered by <a href="https://groq.com" target="_blank">Groq</a></p>
+  </footer>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════ APP JS ═══════════ -->
+<script>
+const CAMPOS = {
+  luz_gas: [
+    {id:'nombre',  label:'Tu nombre completo',        type:'input',    ph:'Ej: María García López',     full:false},
+    {id:'empresa', label:'Empresa reclamada',          type:'input',    ph:'Endesa, Iberdrola, Repsol...', full:false},
+    {id:'contrato',label:'Nº contrato / CUPS',         type:'input',    ph:'Aparece en tu factura',       full:false},
+    {id:'servicio',label:'Servicio (luz/gas/ambos)',    type:'input',    ph:'Electricidad',               full:false},
+    {id:'motivo',  label:'¿Qué ha pasado?',            type:'textarea', ph:'Ej: Me han cobrado el doble en la factura de enero sin justificación...', full:true},
+    {id:'solicitud',label:'¿Qué pides?',               type:'input',    ph:'Rectificación de la factura y devolución de 87€', full:true},
+  ],
+  telefonia: [
+    {id:'nombre',  label:'Tu nombre',                  type:'input',    ph:'Ej: Carlos Ruiz',            full:false},
+    {id:'empresa', label:'Operadora',                   type:'input',    ph:'Movistar, Vodafone, Orange...', full:false},
+    {id:'contrato',label:'Número / Contrato',           type:'input',    ph:'612 345 678',                full:false},
+    {id:'motivo',  label:'¿Qué ha pasado?',            type:'textarea', ph:'Ej: Llevan 3 semanas sin darme la portabilidad solicitada...', full:true},
+    {id:'solicitud',label:'¿Qué pides?',               type:'input',    ph:'Ejecutar la portabilidad en 24h y compensar los días sin servicio', full:true},
+  ],
+  banco: [
+    {id:'nombre',  label:'Tu nombre',                  type:'input',    ph:'Ej: Ana Martínez',           full:false},
+    {id:'empresa', label:'Banco / entidad',             type:'input',    ph:'BBVA, Santander, CaixaBank...', full:false},
+    {id:'contrato',label:'Nº cuenta / contrato',        type:'input',    ph:'ES12 0000 0000...',          full:false},
+    {id:'motivo',  label:'¿Qué ha pasado?',            type:'textarea', ph:'Ej: Han cobrado 240€ en comisiones de mantenimiento que no figuraban en el contrato...', full:true},
+    {id:'solicitud',label:'¿Qué pides?',               type:'input',    ph:'Devolución de 240€ y cancelación de las comisiones futuras', full:true},
+  ],
+  aerolinea: [
+    {id:'nombre',  label:'Tu nombre',                  type:'input',    ph:'Ej: Pedro Sánchez',          full:false},
+    {id:'empresa', label:'Aerolínea',                   type:'input',    ph:'Ryanair, Iberia, Vueling...', full:false},
+    {id:'contrato',label:'Nº reserva',                  type:'input',    ph:'ABC123',                     full:false},
+    {id:'vuelo',   label:'Nº vuelo y fecha',            type:'input',    ph:'FR1234 – 15/03/2025',        full:false},
+    {id:'motivo',  label:'¿Qué ha pasado?',            type:'textarea', ph:'Ej: Vuelo cancelado con menos de 14 días de antelación sin causa de fuerza mayor...', full:true},
+    {id:'solicitud',label:'¿Qué pides?',               type:'input',    ph:'Compensación de 400€ según Reglamento CE 261/2004', full:true},
+  ],
+  seguro: [
+    {id:'nombre',  label:'Tu nombre',                  type:'input',    ph:'Ej: Laura Fernández',        full:false},
+    {id:'empresa', label:'Aseguradora',                 type:'input',    ph:'Mapfre, Allianz, Mutua...', full:false},
+    {id:'contrato',label:'Nº póliza / siniestro',       type:'input',    ph:'POL-123456',                 full:false},
+    {id:'motivo',  label:'¿Qué ha pasado?',            type:'textarea', ph:'Ej: Han denegado el siniestro de rotura de tubería alegando exclusión que no figura en póliza...', full:true},
+    {id:'solicitud',label:'¿Qué pides?',               type:'input',    ph:'Revisión del siniestro y pago de la indemnización de 1.800€', full:true},
+  ],
+  ecommerce: [
+    {id:'nombre',  label:'Tu nombre',                  type:'input',    ph:'Ej: Javier López',           full:false},
+    {id:'empresa', label:'Tienda / plataforma',         type:'input',    ph:'Amazon, Zara, MediaMarkt...', full:false},
+    {id:'contrato',label:'Nº pedido',                   type:'input',    ph:'123-4567890-1234567',        full:false},
+    {id:'motivo',  label:'¿Qué ha pasado?',            type:'textarea', ph:'Ej: El producto llegó defectuoso y se niegan a aceptar la devolución pasados 30 días...', full:true},
+    {id:'solicitud',label:'¿Qué pides?',               type:'input',    ph:'Devolución del importe (89€) o sustitución del producto', full:true},
+  ],
+  comunidad: [
+    {id:'nombre',  label:'Tu nombre',                  type:'input',    ph:'Ej: Rosa Torres',            full:false},
+    {id:'empresa', label:'Destinatario',                type:'input',    ph:'Administrador / Presidente comunidad', full:false},
+    {id:'cargo',   label:'Cargo del destinatario',      type:'input',    ph:'Administrador de fincas',    full:false},
+    {id:'contrato',label:'Tu vivienda',                 type:'input',    ph:'2º B, Calle Mayor 10',       full:false},
+    {id:'motivo',  label:'¿Qué ha pasado?',            type:'textarea', ph:'Ej: El vecino del 3ºA genera ruidos extremos a partir de las 23h desde hace 3 meses...', full:true},
+    {id:'solicitud',label:'¿Qué pides?',               type:'input',    ph:'Mediación y resolución del conflicto en el plazo de 15 días', full:true},
+  ],
+  hacienda: [
+    {id:'nombre',  label:'Tu nombre y NIF',            type:'input',    ph:'Ej: Miguel Ángel Pérez, 12345678A', full:false},
+    {id:'empresa', label:'Organismo al que te diriges', type:'input',    ph:'AEAT, DGT, Ayuntamiento de...', full:false},
+    {id:'contrato',label:'Referencia / expediente',     type:'input',    ph:'Nº expediente o referencia', full:false},
+    {id:'motivo',  label:'¿Qué ha pasado?',            type:'textarea', ph:'Ej: He recibido una sanción de tráfico que considero improcedente porque...', full:true},
+    {id:'solicitud',label:'¿Qué solicitas?',           type:'input',    ph:'Anulación de la sanción / revisión del expediente', full:true},
+  ],
+};
+
+const ICONS  = {luz_gas:'⚡',telefonia:'📱',banco:'🏦',aerolinea:'✈️',seguro:'🛡️',ecommerce:'📦',comunidad:'🏘️',hacienda:'🏛️'};
+const LABELS = {luz_gas:'Luz / Gas',telefonia:'Telefonía / Internet',banco:'Banco / Financiero',aerolinea:'Aerolínea / Viaje',seguro:'Seguro',ecommerce:'Tienda online / Amazon',comunidad:'Vecinos / Comunidad',hacienda:'Hacienda / DGT / Admin'};
+
+let tipo = 'luz_gas';
+let busy = false;
+
+// ── init ──
+async function init() {
+  renderCats();
+  renderFields('luz_gas');
+}
+
+function renderCats() {
+  document.getElementById('cat-grid').innerHTML = Object.keys(CAMPOS).map(k => `
+    <div class="cat ${k===tipo?'active':''}" onclick="setTipo('${k}')">
+      <span class="cat-icon">${ICONS[k]}</span>
+      <span class="cat-name">${LABELS[k]}</span>
+    </div>
+  `).join('');
+}
+
+function setTipo(t) {
+  tipo = t;
+  renderCats();
+  renderFields(t);
+  document.getElementById('f-icon').textContent  = ICONS[t];
+  document.getElementById('f-label').textContent = LABELS[t];
+  clearOutput();
+}
+
+function renderFields(t) {
+  const campos = CAMPOS[t];
+  document.getElementById('form-fields').innerHTML =
+    campos.map(c => {
+      const cls = c.full ? 'fg full' : 'fg';
+      if (c.type === 'textarea')
+        return `<div class="${cls}"><label>${c.label}</label><textarea id="c_${c.id}" placeholder="${c.ph}"></textarea></div>`;
+      return `<div class="${cls}"><label>${c.label}</label><input id="c_${c.id}" type="text" placeholder="${c.ph}"/></div>`;
+    }).join('');
+}
+
+async function checkStatus() {
+  const dot  = document.getElementById('ndot');
+  const stat = document.getElementById('nstatus');
+  try {
+    const r    = await fetch('/api/status');
+    const data = await r.json();
+    if (data.ok) {
+      dot.className    = 'ok';
+      stat.textContent = `Groq · ${data.model}`;
+    } else {
+      throw new Error(data.error || 'API key no configurada');
+    }
+  } catch(e) {
+    dot.className    = 'err';
+    stat.textContent = 'Error de configuración';
+    toast('⚠ ' + e.message);
+  }
+}
+
+// ── GENERAR ──
+async function generar() {
+  if (busy) return;
+  const tono  = document.getElementById('sel-tono').value;
+
+  const campos = CAMPOS[tipo];
+  const datos  = { tono };
+  for (const c of campos) {
+    const el = document.getElementById('c_' + c.id);
+    if (el) datos[c.id] = el.value.trim();
+  }
+
+  // validar primer campo obligatorio (nombre)
+  if (!datos.nombre) return toast('Escribe tu nombre en el primer campo');
+  if (!datos.motivo) return toast('Describe qué ha pasado para poder generar la carta');
+
+  setBusy(true);
+  clearOutput();
+
+  const out = document.getElementById('output');
+  out.classList.remove('empty');
+  let txt = '';
+  const cur = Object.assign(document.createElement('span'), {className:'cursor'});
+
+  try {
+    const res = await fetch('/api/generar', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ tipo, datos })
+    });
+
+    const reader  = res.body.getReader();
+    const decoder = new TextDecoder();
+
+    while (true) {
+      const {done, value} = await reader.read();
+      if (done) break;
+      for (const line of decoder.decode(value).split('\n').filter(l => l.startsWith('data: '))) {
+        const j = JSON.parse(line.slice(6));
+        if (j.error) { toast('Error: ' + j.error); break; }
+        if (j.token) { txt += j.token; out.textContent = txt; out.appendChild(cur); }
+        if (j.done)  { cur.remove(); }
+      }
+    }
+  } catch(e) {
+    toast('Error de conexión: ' + e.message);
+  } finally {
+    cur.remove();
+    setBusy(false);
+  }
+}
+
+function setBusy(v) {
+  busy = v;
+  document.getElementById('btn-gen').disabled  = v;
+  document.getElementById('spin').style.display = v ? 'block' : 'none';
+  document.getElementById('btn-txt').textContent = v ? 'Generando...' : 'Generar carta';
+}
+
+function clearOutput() {
+  const o = document.getElementById('output');
+  o.textContent = 'Tu carta aparecerá aquí. Rellena el formulario arriba y pulsa «Generar carta».';
+  o.className = 'empty';
+}
+
+function copiar() {
+  const txt = document.getElementById('output').textContent;
+  if (!txt || txt.includes('aparecerá aquí')) return;
+  navigator.clipboard.writeText(txt).then(() => {
+    const b = document.getElementById('btn-copy');
+    b.textContent = '✓ copiado';
+    b.className = 'btn-sm done';
+    setTimeout(() => { b.textContent = 'copiar texto'; b.className = 'btn-sm'; }, 2200);
+  });
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+document.addEventListener('keydown', e => { if (e.ctrlKey && e.key === 'Enter') generar(); });
+
+init();
+</script>
+</body>
+</html>
