@@ -5,7 +5,7 @@ const path    = require("path");
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-const GROQ_API_KEY = process.env.GROQ_API_KEY || "";
+const GROQ_API_KEY = process.env.GROQ_API_KEY || "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";
 const GROQ_MODEL   = process.env.GROQ_MODEL   || "llama-3.1-8b-instant";
 const GROQ_URL     = "https://api.groq.com/openai/v1/chat/completions";
 
