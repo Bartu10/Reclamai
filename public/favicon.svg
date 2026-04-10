@@ -1,0 +1,12 @@
+<svg width="16" height="16" viewBox="0 0 16 16"
+  xmlns="http://www.w3.org/2000/svg">
+  <rect width="16" height="16" rx="3" fill="#111111"/>
+  <text x="2" y="12"
+    font-family="Arial Black, Arial, sans-serif"
+    font-weight="900" font-size="11"
+    fill="#E02020">R</text>
+  <text x="9.5" y="12"
+    font-family="Arial, sans-serif"
+    font-weight="700" font-size="6"
+    fill="#FFFFFF">ai</text>
+</svg>
